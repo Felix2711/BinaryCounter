@@ -35,6 +35,18 @@ void Gpio::set(int pin, bool value)
         throw lguErrorText(result);
 }
 
+void Gpio::setPattern(int pattern)
+{
+    int n = 0;
+    int value = 0;
+    for (auto pin: LEDS)
+    {
+        value = (pattern >> n) & 1;
+        lgGpioWrite(m_handle, pin, value);
+        n++;
+    }
+}
+
 
 // Read pin state
 bool Gpio::get(int pin)
@@ -60,4 +72,15 @@ bool Gpio::isActivated(int pin)
 
     m_oldstates[index] = !result;
     return rising;
+}
+
+bool Gpio::detect_edge(int pin, bool edge, int idx)
+{
+    if(m_oldstates[idx] != Gpio::get(pin) && Gpio::get(pin) != edge)
+    {
+        m_oldstates[idx] = Gpio::get(pin);
+        return true;
+    }
+    m_oldstates[idx] = Gpio::get(pin);
+    return false;
 }
