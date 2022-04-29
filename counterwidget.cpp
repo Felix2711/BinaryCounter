@@ -30,9 +30,7 @@ void CounterWidget::updateCounter()
     int n = 0;
     for (auto pin : BUTTONS)
     {
-        int state = !m_gpio.get(pin);
-
-        if(m_gpio.detect_edge(pin, true, n))
+        if(m_gpio.isActivated(pin))
         {
             switch (n)
             {
@@ -42,7 +40,7 @@ void CounterWidget::updateCounter()
                         m_count = 15;
                     break;
                 case 1:
-                    m_count =0;
+                    m_count = 0;
                     break;
                 case 2:
                     m_count++;
@@ -54,10 +52,9 @@ void CounterWidget::updateCounter()
             }
         }
         m_LCD->display(m_count);
-        m_gpio.setPattern(m_count);
+        m_gpio.set(m_count);
         n++;
     }
-
 }
 
 

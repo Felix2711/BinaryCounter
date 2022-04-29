@@ -23,7 +23,7 @@ Gpio::~Gpio()
     // Cleanup GPIO
     int init_level = 0;
     for (auto pin : LEDS)
-        lgGpioWrite(m_handle, pin, init_level);
+    lgGpioWrite(m_handle, pin, init_level);
     lgGpiochipClose(m_handle);
 }
 
@@ -35,7 +35,7 @@ void Gpio::set(int pin, bool value)
         throw lguErrorText(result);
 }
 
-void Gpio::setPattern(int pattern)
+void Gpio::set(int pattern)
 {
     int n = 0;
     int value = 0;
@@ -72,15 +72,4 @@ bool Gpio::isActivated(int pin)
 
     m_oldstates[index] = !result;
     return rising;
-}
-
-bool Gpio::detect_edge(int pin, bool edge, int idx)
-{
-    if(m_oldstates[idx] != Gpio::get(pin) && Gpio::get(pin) != edge)
-    {
-        m_oldstates[idx] = Gpio::get(pin);
-        return true;
-    }
-    m_oldstates[idx] = Gpio::get(pin);
-    return false;
 }

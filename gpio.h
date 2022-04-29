@@ -10,7 +10,7 @@ public:
     explicit Gpio(QObject *parent = nullptr); // constructor
     ~Gpio(); // destructor for clean-up
     void set(int pin, bool value);
-    void setPattern(int pattern);
+    void set(int pattern);
 
     bool get(int pin);
     bool isActivated(int pin);
